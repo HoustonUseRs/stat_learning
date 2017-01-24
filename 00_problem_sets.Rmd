@@ -1,0 +1,17 @@
+---
+title: chapter 4
+output: html_notebook
+---
+
+
+
+# Chapter 4: Classification
+
+```{r}
+nms = c("sahil", "tapsi", "aditi", "neeraj")
+n = 13
+per = sample(nms, n, replace = TRUE)
+
+data.frame(problem = 1:n, person = per)
+
+```

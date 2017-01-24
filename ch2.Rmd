@@ -1,0 +1,61 @@
+# we have normally dist x
+x = rnorm(1000, mean = 100, sd = 50)
+errors = rnorm(1000, mean = 0, sd = 1)
+y = x + errors
+
+library(broom)
+lmfit = lm(y ~ x)
+tmp = summary(lmfit)
+lmfit2 = tidy(lmfit)
+
+hist(lmfit$residuals)
+plot(x, lmfit$residuals)
+
+
+
+# ex1, checking is TS is chi square
+ts = (y - mean(y))^2
+hist(ts)
+
+
+
+# ex2
+library(broom)
+tmp = lapply(1:10000, function(x){
+  x = rnorm(1000, mean = 100, sd = 50)
+  errors = rnorm(1000, mean = 0, sd = 1)
+  y = x + errors
+  
+  lmfit = lm(y ~ x)
+  
+  tss = sum((y - mean(y))^2)
+  rss = sum(lmfit$residuals^2)
+  ess = sum(lmfit$fitted.values - mean(y))
+
+  return(list(tss = tss, rss = rss, ess = ess))
+})
+
+TSS = sapply(tmp, "[[", "tss")
+RSS = sapply(tmp, "[[", "rss")
+ESS = sapply(tmp, "[[", "ess")
+
+plot(density(ESS))
+plot(density(TSS))
+plot(density(RSS))
+
+
+tmp = rchisq(1000, df = 1000 - 2)
+
+par(mfrow = c(1, 2))
+plot(density(RSS, bw = 7))
+plot(density(tmp, bw = 7))
+
+
+par(mfrow = c(2, 3))
+dfs = c(2, 10, 50, 100, 500, 1000 )
+for(df in dfs)
+  print(plot(density(rchisq(1000, df = df)), main = df))
+
+
+
+# END
