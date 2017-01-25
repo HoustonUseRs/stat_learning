@@ -5,7 +5,7 @@ output: html_notebook
 
 
 
-# Chapter 4: Classification
+# Assigning problem sets
 
 ```{r}
 nms = c("sahil", "tapsi", "aditi", "neeraj")
