@@ -1,0 +1,341 @@
+---
+title: "ISLR: Chapter 3 Problems"
+output: html_notebook
+---
+
+## Problem 8 (a)
+
+```{r}
+library(ISLR)
+attach(Auto)
+lm.fit<-lm(mpg~horsepower)
+summary(lm.fit)
+```
+i) Yes
+ii) mpg is -0.158 times horsepower
+iii) negative
+
+### Prediction and intervals
+```{r}
+
+predict(lm.fit,data.frame(horsepower=(c(98))),interval="confidence")
+predict(lm.fit,data.frame(horsepower=(c(98))),interval="prediction")
+```
+(b) Plots
+```{r}
+
+plot(horsepower,mpg)
+abline(lm.fit,lwd=2,col="red")
+```
+
+Diagnostic plots
+```{r}
+par(mfrow=c(2,2))
+plot(lm.fit)
+```
+Residuals are non linear. Few high leverage and high studentized residual(>3) points
+
+## Problem 9
+a) All plots
+```{r}
+pairs(Auto)
+```
+## Correlation
+```{r}
+cor(Auto[-9])
+```
+
+## Fiting a linear model
+```{r}
+lm.fit<-lm(mpg~.-name,data=Auto)
+summary(lm.fit)
+```
+
+- Displacement, weight, year and origin has a relation to the mpg
+- Year, don't know
+
+Residual plots 
+```{r}
+par(mfrow=c(2,2))
+plot(lm.fit)
+```
+
+The residuals are non linear. The leverage for point 14 is high. 
+
+Linear model with interaction term
+```{r}
+lm2.fit<-lm(mpg~.-name+displacement:weight+displacement:year,data=Auto)
+summary(lm2.fit)
+par(mfrow=c(2,2))
+plot(lm2.fit)
+```
+
+## Problem 10 
+```{r}
+lm.fit1<-lm(Sales~Price+Urban+US,data=Carseats)
+summary(lm.fit1)
+
+lm.fit2<-lm(Sales~Price+US,data=Carseats)
+summary(lm.fit2)
+par(mfrow=c(2,2))
+plot(lm.fit2)
+```
+Studentized residual
+```{r}
+plot(predict(lm.fit2), rstudent(lm.fit2))
+```
+
+## Confidence Interval 
+```{r}
+confint(lm.fit2)
+```
+
+## Problem 11a
+```{r}
+set.seed(1)
+x<-rnorm(100)
+y<-2*x+rnorm(100)
+lm.fit3<-lm(y~x+0)
+summary(lm.fit3)
+
+
+```
+## Problem 11b
+
+```{r}
+lm.fit4<-lm(x~y+0)
+summary(lm.fit4)
+
+```
+
+Problem 13a-d
+
+```{r}
+x <- rnorm(100)
+eps <- rnorm(100,sd=sqrt(.25))
+y <- -1+0.5*x+eps
+library(ggplot2)
+# data frame to make ggplot easier
+dt <- data.frame(y=y,x=x)
+p <- ggplot(data=dt,aes(x=x,y=y))
+p+geom_point()
+```
+
+Problem 13e
+
+```{r}
+lm.fit13e <- lm(y~x)
+summary(lm.fit13e)
+
+```
+Problem 13f : Creating plots
+
+```{r}
+p <- ggplot(data=dt,aes(x=x,y=y))
+p+geom_point()+geom_smooth(method='lm',formula=y~x)
+```
+
+
+
+Problem 13g: Fitting a $x^2$ term to the linear regression
+
+```{r}
+lm.fit13g <- lm(y~x+I(x^2))
+summary(lm.fit13g)
+```
+Since the p value is high, it is not possible to reject the null hypothesis. So the additional quadratic term does not improve the model fit
+
+Problem 13h-i : Decreasing the noise in the data. i.e decrease the variance in the eps term
+
+```{r}
+epsl <- rnorm(100,sd=0.1)
+yl <- -1+0.5*x+epsl
+epsm <- rnorm(100,sd=0.9)
+ym <- -1+0.5*x+epsm
+
+lm.fit13h <- lm(yl~x)
+lm.fit13i <- lm(ym~x)
+
+summary(lm.fit13h)
+summary(lm.fit13i)
+```
+
+
+## Problem 13j : Comparing the confidence intervals
+```{r}
+# Original 
+confint(lm.fit13e)
+# Lesser noise
+confint(lm.fit13h)
+# More noise
+confint(lm.fit13i)
+
+```
+
+Problem 14a 
+```{r}
+set.seed(1)
+x1 <- runif(100)
+
+x2 <- 0.5*x1+rnorm (100)/10
+y <- 2+2*x1+0.3*x2+rnorm (100)
+```
+
+
+Problem 14b
+```{r}
+cor(x1,x2)
+
+```
+Scatter
+```{r}
+plot(x1,x2)
+```
+Problem 14c : Fitting a linear model 
+Equation $y=2+2x_1+0.3x_2+\epsilon,x_2=0.5x_1$
+```{r}
+lm.fit14c <- lm(y~x1+x2)
+summary(lm.fit14c)
+
+```
+Estimated $\beta_0,\beta_1,\beta_2=2.13,1.5,1$
+Actual $\beta_0,\beta_1,\beta_2=2,2,0.3$
+
+x2 has high p value, so the null hypothesis$\beta_2=0$ cannot be rejected
+
+Problem 14d: Fitting only for x1
+```{r}
+lm.fit14d <- lm(y~x1)
+summary(lm.fit14d)
+```
+p-value and F static proves that the null hypothesis can be rejected
+
+Problem 14e: Fitting for x2 alone
+```{r}
+lm.fit14e <- lm(y~x2)
+summary(lm.fit14e)
+```
+p-value and F static proves that the null hypothesis can be rejected
+
+Problem 14f : The results contradict due to the linearity between x1 and x2. This can be examined by looking at the correlation matrix. It is better to look at the VIF.
+```{r}
+library(car)
+# For the fit with X1 and X2
+vif(lm.fit14c)
+```
+
+Not sure about how to interpret these values.
+
+Problem 14g:
+
+```{r}
+x1 <- c(x1,0.1)
+x2 <- c(x2,0.8)
+y <- c(y,6)
+
+lm.fit14g1 <- lm(y~x1+x2)
+lm.fit14g2 <- lm(y~x1)
+lm.fit14g3 <- lm(y~x2)
+
+summary(lm.fit14g1)
+summary(lm.fit14g2)
+summary(lm.fit14g3)
+
+```
+It is an outlier. Checking with diagnostic plots 
+```{r}
+par(mfrow=c(2,2))
+plot(lm.fit14g1)
+plot(lm.fit14g2)
+plot(lm.fit14g3)
+```
+
+Looks like an outlier, in the second case $y\equiv x1$, since the studentized residual is over 3. 
+
+## Problem 15a : Plots and linear regression to each variable
+
+```{r}
+library(MASS)
+# Plots
+pairs(Boston)
+DF <- Boston
+summary(DF)
+
+```
+
+
+
+```{r}
+# Not a good way to do it 
+attach(Boston)
+summary(lm(crim~zn))
+summary(lm(crim~indus))
+summary(lm(crim~chas))
+summary(lm(crim~nox))
+summary(lm(crim~rm))
+summary(lm(crim~age))
+summary(lm(crim~dis))
+summary(lm(crim~rad))
+summary(lm(crim~tax))
+summary(lm(crim~ptratio))
+summary(lm(crim~black))
+summary(lm(crim~lstat))
+summary(lm(crim~medv))
+
+```
+
+Observations 
+For chas, the p value is high. 
+
+## Problem 15b: Fitting a multiple linear regression
+
+```{r}
+library(MASS)
+lm.fit15b <- lm(crim~.,data = Boston)
+summary(lm.fit15b)
+
+```
+Observations : The null hypothesis can only be rejected for dis,rad,blac,zn,indus,medv
+
+
+Checking linear model fit 
+
+```{r}
+plot(lm.fit15b)
+```
+
+
+```{r}
+attach(Boston)
+
+a <- c(coefficients(lm(crim~zn))[2],
+coefficients(lm(crim~indus))[2],
+coefficients(lm(crim~chas))[2],
+coefficients(lm(crim~nox))[2],
+coefficients(lm(crim~rm))[2],
+coefficients(lm(crim~age))[2],
+coefficients(lm(crim~dis))[2],
+coefficients(lm(crim~rad))[2],
+coefficients(lm(crim~tax))[2],
+coefficients(lm(crim~ptratio))[2],
+coefficients(lm(crim~black))[2],
+coefficients(lm(crim~lstat))[2],
+coefficients(lm(crim~medv))[2])
+b <- coefficients(lm.fit15b)[2:14]
+plot(b~a)
+plot(seq(1,13),b/a)
+```
+
+Checking the VIF 
+```{r}
+library(car)
+vif(lm.fit15b)
+```
+
+Fitting a non linear model to the third power. 
+```{r}
+attach(Boston)
+lm.fit15d <- lm(crim~dis+I(dis^2)+I(dis^3)+rad+I(rad^2)+I(rad^3)+black+I(black^2)+I(black^3)+zn+I(zn^2)+I(zn^3)+medv+I(medv^2)+I(medv^3))
+summary(lm.fit15d)
+```
+rad is 'interesting'
