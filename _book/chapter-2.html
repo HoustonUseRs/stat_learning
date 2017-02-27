@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Notes on: Introduction to Statistical Learning</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta name="description" content="Notes and solutions on ISLR">
+  <meta name="generator" content="bookdown 0.3 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Notes on: Introduction to Statistical Learning" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Notes and solutions on ISLR" />
+  <meta name="github-repo" content="HoustonUseRs/stat_learning" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Notes on: Introduction to Statistical Learning" />
+  
+  <meta name="twitter:description" content="Notes and solutions on ISLR" />
+  
+
+<meta name="author" content="Houston R Users">
+
+
+<meta name="date" content="2017-02-26">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+
+<link rel="next" href="chapter-3.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+true
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Notes on: Introduction to Statistical Learning</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Notes on: Introduction to Statistical Learning</h1>
+<h4 class="author"><em>Houston R Users</em></h4>
+<h4 class="date"><em>2017-02-26</em></h4>
+</div>
+<div id="chapter-2" class="section level1">
+<h1><span class="header-section-number">1</span> Chapter 2</h1>
+<div id="notes" class="section level2">
+<h2><span class="header-section-number">1.1</span> Notes</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># we have normally dist x</span>
+x =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="dt">mean =</span> <span class="dv">100</span>, <span class="dt">sd =</span> <span class="dv">50</span>)
+errors =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">1</span>)
+y =<span class="st"> </span>x +<span class="st"> </span>errors
+
+<span class="kw">library</span>(broom)
+lmfit =<span class="st"> </span><span class="kw">lm</span>(y ~<span class="st"> </span>x)
+tmp =<span class="st"> </span><span class="kw">summary</span>(lmfit)
+lmfit2 =<span class="st"> </span><span class="kw">tidy</span>(lmfit)
+
+<span class="kw">hist</span>(lmfit$residuals)</code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(x, lmfit$residuals)</code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ex1, checking is TS is chi square</span>
+ts =<span class="st"> </span>(y -<span class="st"> </span><span class="kw">mean</span>(y))^<span class="dv">2</span>
+<span class="kw">hist</span>(ts)</code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ex2</span>
+<span class="kw">library</span>(broom)
+tmp =<span class="st"> </span><span class="kw">lapply</span>(<span class="dv">1</span>:<span class="dv">10000</span>, function(x){
+  x =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="dt">mean =</span> <span class="dv">100</span>, <span class="dt">sd =</span> <span class="dv">50</span>)
+  errors =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">1</span>)
+  y =<span class="st"> </span>x +<span class="st"> </span>errors
+  
+  lmfit =<span class="st"> </span><span class="kw">lm</span>(y ~<span class="st"> </span>x)
+  
+  tss =<span class="st"> </span><span class="kw">sum</span>((y -<span class="st"> </span><span class="kw">mean</span>(y))^<span class="dv">2</span>)
+  rss =<span class="st"> </span><span class="kw">sum</span>(lmfit$residuals^<span class="dv">2</span>)
+  ess =<span class="st"> </span><span class="kw">sum</span>(lmfit$fitted.values -<span class="st"> </span><span class="kw">mean</span>(y))
+
+  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">tss =</span> tss, <span class="dt">rss =</span> rss, <span class="dt">ess =</span> ess))
+})
+
+TSS =<span class="st"> </span><span class="kw">sapply</span>(tmp, <span class="st">&quot;[[&quot;</span>, <span class="st">&quot;tss&quot;</span>)
+RSS =<span class="st"> </span><span class="kw">sapply</span>(tmp, <span class="st">&quot;[[&quot;</span>, <span class="st">&quot;rss&quot;</span>)
+ESS =<span class="st"> </span><span class="kw">sapply</span>(tmp, <span class="st">&quot;[[&quot;</span>, <span class="st">&quot;ess&quot;</span>)
+
+<span class="kw">plot</span>(<span class="kw">density</span>(ESS))</code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-3-4.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">density</span>(TSS))</code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-3-5.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">density</span>(RSS))</code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-3-6.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tmp =<span class="st"> </span><span class="kw">rchisq</span>(<span class="dv">1000</span>, <span class="dt">df =</span> <span class="dv">1000</span> -<span class="st"> </span><span class="dv">2</span>)
+
+<span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))
+<span class="kw">plot</span>(<span class="kw">density</span>(RSS, <span class="dt">bw =</span> <span class="dv">7</span>))
+<span class="kw">plot</span>(<span class="kw">density</span>(tmp, <span class="dt">bw =</span> <span class="dv">7</span>))</code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-3-7.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">3</span>))
+dfs =<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">500</span>, <span class="dv">1000</span> )
+for(df in dfs)
+  <span class="kw">print</span>(<span class="kw">plot</span>(<span class="kw">density</span>(<span class="kw">rchisq</span>(<span class="dv">1000</span>, <span class="dt">df =</span> df)), <span class="dt">main =</span> df))</code></pre></div>
+<pre><code>## NULL</code></pre>
+<pre><code>## NULL</code></pre>
+<pre><code>## NULL</code></pre>
+<pre><code>## NULL</code></pre>
+<pre><code>## NULL</code></pre>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-3-8.png" width="672" /></p>
+<pre><code>## NULL</code></pre>
+</div>
+<div id="example-of-knn" class="section level2">
+<h2><span class="header-section-number">1.2</span> Example of KNN</h2>
+<p><a href="http://stats.stackexchange.com/questions/21572/how-to-plot-decision-boundary-of-a-k-nearest-neighbor-classifier-from-elements-o" class="uri">http://stats.stackexchange.com/questions/21572/how-to-plot-decision-boundary-of-a-k-nearest-neighbor-classifier-from-elements-o</a></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(pacman)
+<span class="kw">p_load</span>(ElemStatLearn, class)
+
+x &lt;-<span class="st"> </span>mixture.example$x
+g &lt;-<span class="st"> </span>mixture.example$y
+xnew &lt;-<span class="st"> </span>mixture.example$xnew
+mod15 &lt;-<span class="st"> </span><span class="kw">knn</span>(x, xnew, g, <span class="dt">k=</span><span class="dv">15</span>, <span class="dt">prob=</span><span class="ot">TRUE</span>)
+prob &lt;-<span class="st"> </span><span class="kw">attr</span>(mod15, <span class="st">&quot;prob&quot;</span>)
+prob &lt;-<span class="st"> </span><span class="kw">ifelse</span>(mod15==<span class="st">&quot;1&quot;</span>, prob, <span class="dv">1</span>-prob)
+px1 &lt;-<span class="st"> </span>mixture.example$px1
+px2 &lt;-<span class="st"> </span>mixture.example$px2
+prob15 &lt;-<span class="st"> </span><span class="kw">matrix</span>(prob, <span class="kw">length</span>(px1), <span class="kw">length</span>(px2))
+<span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">rep</span>(<span class="dv">2</span>,<span class="dv">4</span>))
+<span class="kw">contour</span>(px1, px2, prob15, <span class="dt">levels=</span><span class="fl">0.5</span>, <span class="dt">labels=</span><span class="st">&quot;&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;&quot;</span>, <span class="dt">main=</span>
+        <span class="st">&quot;15-nearest neighbour&quot;</span>, <span class="dt">axes=</span><span class="ot">FALSE</span>)
+<span class="kw">points</span>(x, <span class="dt">col=</span><span class="kw">ifelse</span>(g==<span class="dv">1</span>, <span class="st">&quot;coral&quot;</span>, <span class="st">&quot;cornflowerblue&quot;</span>))
+gd &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">x=</span>px1, <span class="dt">y=</span>px2)
+<span class="kw">points</span>(gd, <span class="dt">pch=</span><span class="st">&quot;.&quot;</span>, <span class="dt">cex=</span><span class="fl">1.2</span>, <span class="dt">col=</span><span class="kw">ifelse</span>(prob15&gt;<span class="fl">0.5</span>, <span class="st">&quot;coral&quot;</span>, <span class="st">&quot;cornflowerblue&quot;</span>))
+<span class="kw">box</span>()</code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<blockquote>
+<p>END</p>
+</blockquote>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="chapter-3.html" class="navigation navigation-next navigation-unique" aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/02a_notes.Rmd",
+"text": "Edit"
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

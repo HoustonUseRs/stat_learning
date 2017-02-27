@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Notes on: Introduction to Statistical Learning</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta name="description" content="Notes and solutions on ISLR">
+  <meta name="generator" content="bookdown 0.3 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Notes on: Introduction to Statistical Learning" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Notes and solutions on ISLR" />
+  <meta name="github-repo" content="HoustonUseRs/stat_learning" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Notes on: Introduction to Statistical Learning" />
+  
+  <meta name="twitter:description" content="Notes and solutions on ISLR" />
+  
+
+<meta name="author" content="Houston R Users">
+
+
+<meta name="date" content="2017-02-26">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="chapter-4.html">
+<link rel="next" href="end.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+true
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Notes on: Introduction to Statistical Learning</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="knn" class="section level1">
+<h1><span class="header-section-number">4</span> ’ KNN</h1>
+<p>KNN does not like formulas, it needs</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">p_load</span>(class)
+
+<span class="co"># X: predictors</span>
+train.X =<span class="st"> </span><span class="kw">cbind</span>(Smarket$Lag1, Smarket$Lag2)[train ,]
+test.X =<span class="st"> </span><span class="kw">cbind</span>(Smarket$Lag1, Smarket$Lag2)[!train, ]
+
+<span class="co"># Y: response</span>
+train.Direction =<span class="st"> </span>Smarket$Direction[train]
+
+
+
+for(k in <span class="dv">1</span>:<span class="dv">4</span>){
+  <span class="kw">set.seed</span>(<span class="dv">1</span>)
+  <span class="kw">cat</span>(<span class="st">&quot;working with k:&quot;</span>, k)
+  <span class="co">#           training  test    what is the response</span>
+  knn.pred =<span class="st"> </span><span class="kw">knn</span>(train.X, test.X, train.Direction, <span class="dt">k =</span> )
+  <span class="kw">table</span>(knn.pred, smarket_2005$Direction)
+  <span class="kw">mean</span>(knn.pred ==<span class="st"> </span>smarket_2005$Direction)
+}</code></pre></div>
+<pre><code>## working with k: 1working with k: 2working with k: 3working with k: 4</code></pre>
+<p>Using LDA with MLR</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">p_load</span>(mlr)
+<span class="kw">data</span>(iris)
+
+<span class="kw">print</span>(iris)</code></pre></div>
+<pre><code>##     Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+## 1            5.1         3.5          1.4         0.2     setosa
+## 2            4.9         3.0          1.4         0.2     setosa
+## 3            4.7         3.2          1.3         0.2     setosa
+## 4            4.6         3.1          1.5         0.2     setosa
+## 5            5.0         3.6          1.4         0.2     setosa
+## 6            5.4         3.9          1.7         0.4     setosa
+## 7            4.6         3.4          1.4         0.3     setosa
+## 8            5.0         3.4          1.5         0.2     setosa
+## 9            4.4         2.9          1.4         0.2     setosa
+## 10           4.9         3.1          1.5         0.1     setosa
+## 11           5.4         3.7          1.5         0.2     setosa
+## 12           4.8         3.4          1.6         0.2     setosa
+## 13           4.8         3.0          1.4         0.1     setosa
+## 14           4.3         3.0          1.1         0.1     setosa
+## 15           5.8         4.0          1.2         0.2     setosa
+## 16           5.7         4.4          1.5         0.4     setosa
+## 17           5.4         3.9          1.3         0.4     setosa
+## 18           5.1         3.5          1.4         0.3     setosa
+## 19           5.7         3.8          1.7         0.3     setosa
+## 20           5.1         3.8          1.5         0.3     setosa
+## 21           5.4         3.4          1.7         0.2     setosa
+## 22           5.1         3.7          1.5         0.4     setosa
+## 23           4.6         3.6          1.0         0.2     setosa
+## 24           5.1         3.3          1.7         0.5     setosa
+## 25           4.8         3.4          1.9         0.2     setosa
+## 26           5.0         3.0          1.6         0.2     setosa
+## 27           5.0         3.4          1.6         0.4     setosa
+## 28           5.2         3.5          1.5         0.2     setosa
+## 29           5.2         3.4          1.4         0.2     setosa
+## 30           4.7         3.2          1.6         0.2     setosa
+## 31           4.8         3.1          1.6         0.2     setosa
+## 32           5.4         3.4          1.5         0.4     setosa
+## 33           5.2         4.1          1.5         0.1     setosa
+## 34           5.5         4.2          1.4         0.2     setosa
+## 35           4.9         3.1          1.5         0.2     setosa
+## 36           5.0         3.2          1.2         0.2     setosa
+## 37           5.5         3.5          1.3         0.2     setosa
+## 38           4.9         3.6          1.4         0.1     setosa
+## 39           4.4         3.0          1.3         0.2     setosa
+## 40           5.1         3.4          1.5         0.2     setosa
+## 41           5.0         3.5          1.3         0.3     setosa
+## 42           4.5         2.3          1.3         0.3     setosa
+## 43           4.4         3.2          1.3         0.2     setosa
+## 44           5.0         3.5          1.6         0.6     setosa
+## 45           5.1         3.8          1.9         0.4     setosa
+## 46           4.8         3.0          1.4         0.3     setosa
+## 47           5.1         3.8          1.6         0.2     setosa
+## 48           4.6         3.2          1.4         0.2     setosa
+## 49           5.3         3.7          1.5         0.2     setosa
+## 50           5.0         3.3          1.4         0.2     setosa
+## 51           7.0         3.2          4.7         1.4 versicolor
+## 52           6.4         3.2          4.5         1.5 versicolor
+## 53           6.9         3.1          4.9         1.5 versicolor
+## 54           5.5         2.3          4.0         1.3 versicolor
+## 55           6.5         2.8          4.6         1.5 versicolor
+## 56           5.7         2.8          4.5         1.3 versicolor
+## 57           6.3         3.3          4.7         1.6 versicolor
+## 58           4.9         2.4          3.3         1.0 versicolor
+## 59           6.6         2.9          4.6         1.3 versicolor
+## 60           5.2         2.7          3.9         1.4 versicolor
+## 61           5.0         2.0          3.5         1.0 versicolor
+## 62           5.9         3.0          4.2         1.5 versicolor
+## 63           6.0         2.2          4.0         1.0 versicolor
+## 64           6.1         2.9          4.7         1.4 versicolor
+## 65           5.6         2.9          3.6         1.3 versicolor
+## 66           6.7         3.1          4.4         1.4 versicolor
+## 67           5.6         3.0          4.5         1.5 versicolor
+## 68           5.8         2.7          4.1         1.0 versicolor
+## 69           6.2         2.2          4.5         1.5 versicolor
+## 70           5.6         2.5          3.9         1.1 versicolor
+## 71           5.9         3.2          4.8         1.8 versicolor
+## 72           6.1         2.8          4.0         1.3 versicolor
+## 73           6.3         2.5          4.9         1.5 versicolor
+## 74           6.1         2.8          4.7         1.2 versicolor
+## 75           6.4         2.9          4.3         1.3 versicolor
+## 76           6.6         3.0          4.4         1.4 versicolor
+## 77           6.8         2.8          4.8         1.4 versicolor
+## 78           6.7         3.0          5.0         1.7 versicolor
+## 79           6.0         2.9          4.5         1.5 versicolor
+## 80           5.7         2.6          3.5         1.0 versicolor
+## 81           5.5         2.4          3.8         1.1 versicolor
+## 82           5.5         2.4          3.7         1.0 versicolor
+## 83           5.8         2.7          3.9         1.2 versicolor
+## 84           6.0         2.7          5.1         1.6 versicolor
+## 85           5.4         3.0          4.5         1.5 versicolor
+## 86           6.0         3.4          4.5         1.6 versicolor
+## 87           6.7         3.1          4.7         1.5 versicolor
+## 88           6.3         2.3          4.4         1.3 versicolor
+## 89           5.6         3.0          4.1         1.3 versicolor
+## 90           5.5         2.5          4.0         1.3 versicolor
+## 91           5.5         2.6          4.4         1.2 versicolor
+## 92           6.1         3.0          4.6         1.4 versicolor
+## 93           5.8         2.6          4.0         1.2 versicolor
+## 94           5.0         2.3          3.3         1.0 versicolor
+## 95           5.6         2.7          4.2         1.3 versicolor
+## 96           5.7         3.0          4.2         1.2 versicolor
+## 97           5.7         2.9          4.2         1.3 versicolor
+## 98           6.2         2.9          4.3         1.3 versicolor
+## 99           5.1         2.5          3.0         1.1 versicolor
+## 100          5.7         2.8          4.1         1.3 versicolor
+## 101          6.3         3.3          6.0         2.5  virginica
+## 102          5.8         2.7          5.1         1.9  virginica
+## 103          7.1         3.0          5.9         2.1  virginica
+## 104          6.3         2.9          5.6         1.8  virginica
+## 105          6.5         3.0          5.8         2.2  virginica
+## 106          7.6         3.0          6.6         2.1  virginica
+## 107          4.9         2.5          4.5         1.7  virginica
+## 108          7.3         2.9          6.3         1.8  virginica
+## 109          6.7         2.5          5.8         1.8  virginica
+## 110          7.2         3.6          6.1         2.5  virginica
+## 111          6.5         3.2          5.1         2.0  virginica
+## 112          6.4         2.7          5.3         1.9  virginica
+## 113          6.8         3.0          5.5         2.1  virginica
+## 114          5.7         2.5          5.0         2.0  virginica
+## 115          5.8         2.8          5.1         2.4  virginica
+## 116          6.4         3.2          5.3         2.3  virginica
+## 117          6.5         3.0          5.5         1.8  virginica
+## 118          7.7         3.8          6.7         2.2  virginica
+## 119          7.7         2.6          6.9         2.3  virginica
+## 120          6.0         2.2          5.0         1.5  virginica
+## 121          6.9         3.2          5.7         2.3  virginica
+## 122          5.6         2.8          4.9         2.0  virginica
+## 123          7.7         2.8          6.7         2.0  virginica
+## 124          6.3         2.7          4.9         1.8  virginica
+## 125          6.7         3.3          5.7         2.1  virginica
+## 126          7.2         3.2          6.0         1.8  virginica
+## 127          6.2         2.8          4.8         1.8  virginica
+## 128          6.1         3.0          4.9         1.8  virginica
+## 129          6.4         2.8          5.6         2.1  virginica
+## 130          7.2         3.0          5.8         1.6  virginica
+## 131          7.4         2.8          6.1         1.9  virginica
+## 132          7.9         3.8          6.4         2.0  virginica
+## 133          6.4         2.8          5.6         2.2  virginica
+## 134          6.3         2.8          5.1         1.5  virginica
+## 135          6.1         2.6          5.6         1.4  virginica
+## 136          7.7         3.0          6.1         2.3  virginica
+## 137          6.3         3.4          5.6         2.4  virginica
+## 138          6.4         3.1          5.5         1.8  virginica
+## 139          6.0         3.0          4.8         1.8  virginica
+## 140          6.9         3.1          5.4         2.1  virginica
+## 141          6.7         3.1          5.6         2.4  virginica
+## 142          6.9         3.1          5.1         2.3  virginica
+## 143          5.8         2.7          5.1         1.9  virginica
+## 144          6.8         3.2          5.9         2.3  virginica
+## 145          6.7         3.3          5.7         2.5  virginica
+## 146          6.7         3.0          5.2         2.3  virginica
+## 147          6.3         2.5          5.0         1.9  virginica
+## 148          6.5         3.0          5.2         2.0  virginica
+## 149          6.2         3.4          5.4         2.3  virginica
+## 150          5.9         3.0          5.1         1.8  virginica</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Define the task
+task =<span class="st"> </span><span class="kw">makeClassifTask</span>(<span class="dt">id =</span> <span class="st">&quot;tutorial&quot;</span>, <span class="dt">data =</span> iris, <span class="dt">target =</span> <span class="st">&quot;Species&quot;</span>)
+
+## Define the learner
+lrn =<span class="st"> </span><span class="kw">makeLearner</span>(<span class="st">&quot;classif.lda&quot;</span>)
+
+## Define the resampling strategy
+rdesc =<span class="st"> </span><span class="kw">makeResampleDesc</span>(<span class="dt">method =</span> <span class="st">&quot;CV&quot;</span>, <span class="dt">stratify =</span> <span class="ot">TRUE</span>)
+
+## Do the resampling
+r =<span class="st"> </span><span class="kw">resample</span>(<span class="dt">learner =</span> lrn, <span class="dt">task =</span> task, <span class="dt">resampling =</span> rdesc, <span class="dt">show.info =</span> <span class="ot">FALSE</span>)
+
+## Get the mean misclassification error
+<span class="kw">print</span>(r)</code></pre></div>
+<pre><code>## Resample Result
+## Task: tutorial
+## Learner: classif.lda
+## mmce.aggr: 0.03
+## mmce.mean: 0.03
+## mmce.sd: 0.06
+## Runtime: 0.134475</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(MASS)
+fit.lda &lt;-<span class="st"> </span><span class="kw">lda</span>(direction ~<span class="st"> </span>lag2, 
+               <span class="dt">data =</span> weekly, 
+               <span class="dt">subset =</span> train)
+fit.lda
+
+pred.lda &lt;-<span class="st"> </span><span class="kw">predict</span>(fit.lda, weekly<span class="fl">.20092010</span>)
+<span class="kw">table</span>(pred.lda$class, direction<span class="fl">.20092010</span>)</code></pre></div>
+<div id="q-11." class="section level2">
+<h2><span class="header-section-number">4.1</span> Q 11.</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">attach</span>(Auto)</code></pre></div>
+<pre><code>## The following objects are masked from Auto (pos = 12):
+## 
+##     acceleration, cylinders, displacement, horsepower, mpg, name,
+##     origin, weight, year</code></pre>
+<pre><code>## The following object is masked from package:ggplot2:
+## 
+##     mpg</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg01 &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">length</span>(mpg))
+mpg01[mpg &gt;<span class="st"> </span><span class="kw">median</span>(mpg)] &lt;-<span class="st"> </span><span class="dv">1</span>
+Auto &lt;-<span class="st"> </span><span class="kw">data.frame</span>(Auto, mpg01)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(Auto[, -<span class="dv">9</span>])</code></pre></div>
+<pre><code>##                     mpg  cylinders displacement horsepower     weight
+## mpg           1.0000000 -0.7776175   -0.8051269 -0.7784268 -0.8322442
+## cylinders    -0.7776175  1.0000000    0.9508233  0.8429834  0.8975273
+## displacement -0.8051269  0.9508233    1.0000000  0.8972570  0.9329944
+## horsepower   -0.7784268  0.8429834    0.8972570  1.0000000  0.8645377
+## weight       -0.8322442  0.8975273    0.9329944  0.8645377  1.0000000
+## acceleration  0.4233285 -0.5046834   -0.5438005 -0.6891955 -0.4168392
+## year          0.5805410 -0.3456474   -0.3698552 -0.4163615 -0.3091199
+## origin        0.5652088 -0.5689316   -0.6145351 -0.4551715 -0.5850054
+## mpg01         0.8369392 -0.7591939   -0.7534766 -0.6670526 -0.7577566
+##              acceleration       year     origin      mpg01
+## mpg             0.4233285  0.5805410  0.5652088  0.8369392
+## cylinders      -0.5046834 -0.3456474 -0.5689316 -0.7591939
+## displacement   -0.5438005 -0.3698552 -0.6145351 -0.7534766
+## horsepower     -0.6891955 -0.4163615 -0.4551715 -0.6670526
+## weight         -0.4168392 -0.3091199 -0.5850054 -0.7577566
+## acceleration    1.0000000  0.2903161  0.2127458  0.3468215
+## year            0.2903161  1.0000000  0.1815277  0.4299042
+## origin          0.2127458  0.1815277  1.0000000  0.5136984
+## mpg01           0.3468215  0.4299042  0.5136984  1.0000000</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pairs</span>(Auto)</code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-84-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(cylinders ~<span class="st"> </span>mpg01, <span class="dt">data =</span> Auto, <span class="dt">main =</span> <span class="st">&quot;Cylinders vs mpg01&quot;</span>)</code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-85-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(displacement ~<span class="st"> </span>mpg01, <span class="dt">data =</span> Auto, <span class="dt">main =</span> <span class="st">&quot;Displacement vs mpg01&quot;</span>)</code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-85-2.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(horsepower ~<span class="st"> </span>mpg01, <span class="dt">data =</span> Auto, <span class="dt">main =</span> <span class="st">&quot;Horsepower vs mpg01&quot;</span>)</code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-85-3.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(weight ~<span class="st"> </span>mpg01, <span class="dt">data =</span> Auto, <span class="dt">main =</span> <span class="st">&quot;Weight vs mpg01&quot;</span>)</code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-85-4.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(acceleration ~<span class="st"> </span>mpg01, <span class="dt">data =</span> Auto, <span class="dt">main =</span> <span class="st">&quot;Acceleration vs mpg01&quot;</span>)</code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-85-5.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(year ~<span class="st"> </span>mpg01, <span class="dt">data =</span> Auto, <span class="dt">main =</span> <span class="st">&quot;Year vs mpg01&quot;</span>)</code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-85-6.png" width="672" /></p>
+<p>c We may conclude that there exists some association between “mpg01” and “cylinders”, “weight”, “displacement” and “horsepower”. Split the data into a training set and a test set.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">train =<span class="st"> </span>(year%%<span class="dv">2</span> ==<span class="st"> </span><span class="dv">0</span>)  <span class="co"># if the year is even</span>
+test =<span class="st"> </span>!train
+Auto.train =<span class="st"> </span>Auto[train, ]
+Auto.test =<span class="st"> </span>Auto[test, ]
+mpg01.test =<span class="st"> </span>mpg01[test]</code></pre></div>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>Perform LDA on the training data in order to predict “mpg01” using the variables that seemed most associated with “mpg01” in (b). What is the test error of the model obtained ?</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">p_load</span>(MASS)
+
+<span class="co"># LDA</span>
+<span class="kw">library</span>(MASS)
+lda.fit =<span class="st"> </span><span class="kw">lda</span>(mpg01 ~<span class="st"> </span>cylinders +<span class="st"> </span>weight +<span class="st"> </span>displacement +<span class="st"> </span>horsepower, 
+              <span class="dt">data =</span> Auto, 
+    <span class="dt">subset =</span> train)
+lda.pred =<span class="st"> </span><span class="kw">predict</span>(lda.fit, Auto.test)
+<span class="kw">mean</span>(lda.pred$class !=<span class="st"> </span>mpg01.test)</code></pre></div>
+<pre><code>## [1] 0.1263736</code></pre>
+<ol start="5" style="list-style-type: lower-alpha">
+<li></li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># QDA</span>
+qda.fit =<span class="st"> </span><span class="kw">qda</span>(mpg01 ~<span class="st"> </span>cylinders +<span class="st"> </span>weight +<span class="st"> </span>displacement +<span class="st"> </span>horsepower, <span class="dt">data =</span> Auto, 
+    <span class="dt">subset =</span> train)
+qda.pred =<span class="st"> </span><span class="kw">predict</span>(qda.fit, Auto.test)
+<span class="kw">mean</span>(qda.pred$class !=<span class="st"> </span>mpg01.test)</code></pre></div>
+<pre><code>## [1] 0.1318681</code></pre>
+<ol start="6" style="list-style-type: lower-alpha">
+<li>logistic</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Logistic regression</span>
+glm.fit =<span class="st"> </span><span class="kw">glm</span>(mpg01 ~<span class="st"> </span>cylinders +<span class="st"> </span>weight +<span class="st"> </span>displacement +<span class="st"> </span>horsepower, <span class="dt">data =</span> Auto, 
+    <span class="dt">family =</span> binomial, <span class="dt">subset =</span> train)
+glm.probs =<span class="st"> </span><span class="kw">predict</span>(glm.fit, Auto.test, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>)
+glm.pred =<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">length</span>(glm.probs))
+glm.pred[glm.probs &gt;<span class="st"> </span><span class="fl">0.5</span>] =<span class="st"> </span><span class="dv">1</span>
+<span class="kw">mean</span>(glm.pred !=<span class="st"> </span>mpg01.test)</code></pre></div>
+<pre><code>## [1] 0.1208791</code></pre>
+<ol start="7" style="list-style-type: lower-alpha">
+<li>KNN</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(class)
+train.X =<span class="st"> </span><span class="kw">cbind</span>(cylinders, weight, displacement, horsepower)[train, ]
+test.X =<span class="st"> </span><span class="kw">cbind</span>(cylinders, weight, displacement, horsepower)[test, ]
+train.mpg01 =<span class="st"> </span>mpg01[train]
+<span class="kw">set.seed</span>(<span class="dv">1</span>)
+
+<span class="co"># KNN(k=1)</span>
+knn.pred =<span class="st"> </span><span class="kw">knn</span>(train.X, test.X, train.mpg01, <span class="dt">k =</span> <span class="dv">1</span>)
+<span class="kw">mean</span>(knn.pred !=<span class="st"> </span>mpg01.test)</code></pre></div>
+<pre><code>## [1] 0.1538462</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># KNN(k=10)</span>
+knn.pred =<span class="st"> </span><span class="kw">knn</span>(train.X, test.X, train.mpg01, <span class="dt">k =</span> <span class="dv">10</span>)
+<span class="kw">mean</span>(knn.pred !=<span class="st"> </span>mpg01.test)</code></pre></div>
+<pre><code>## [1] 0.1648352</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># KNN(k=100)</span>
+knn.pred =<span class="st"> </span><span class="kw">knn</span>(train.X, test.X, train.mpg01, <span class="dt">k =</span> <span class="dv">100</span>)
+<span class="kw">mean</span>(knn.pred !=<span class="st"> </span>mpg01.test)</code></pre></div>
+<pre><code>## [1] 0.1428571</code></pre>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="chapter-4.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="end.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/04b_solutions.Rmd",
+"text": "Edit"
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
