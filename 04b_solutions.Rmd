@@ -1,0 +1,459 @@
+---
+title: "Chapter 4"
+output: html_notebook
+---
+
+
+
+## Solutions
+
+
+### Conceptual
+
+### Q1. 
+> Using a little bit of algebra, prove that (4.2) is equivalent to (4.3). In other words, the logistic function representation and logit representation for the logistic regression model are equivalent.
+
+$$p(X) = \frac{e^{\beta_0 + \beta_1 X}}{1 + e^{\beta_0 + \beta_1 X}} \Leftrightarrow e^{\beta_0 + \beta_1 X}(1 - p(X)) = p(X)$$
+
+
+which is equivalent to
+\[\frac{p(X)}{1 - p(X)} = e^{\beta_0 + \beta_1 X}.\]*
+
+
+### Q2. It was stated in the text that classifying an observation to the class for which (4.12) is largest is equivalent to classifying an observation to the class for which (4.13) is largest. Prove that this is the case. In other words, under the assumption that the observations in the kth class are drawn from a $N(\mu_k, \sigma^2)$ distribution, the Bayes’ classifier assigns an observation to the class for which the discriminant function is maximized.
+
+
+
+### Q3. This problem relates to the QDA model, in which the observations within each class are drawn from a normal distribution with a classspecific mean vector and a class specific covariance matrix. We consider the simple case where $p = 1$; i.e. there is only one feature. Suppose that we have $K$ classes, and that if an observation belongs to the kth class then $X$ comes from a one-dimensional normal distribution, $X \sim N(\mu_k, \sigma_k)$. Recall that the density function for the one-dimensional normal distribution is given in (4.11). Prove that in this case, the Bayes’ classifier is not linear. Argue that it is in fact quadratic.
+
+
+
+### Q4. When the number of features p is large, there tends to be a deterioration in the performance of KNN and other local approaches that perform prediction using only observations that are near the test observation for which a prediction must be made. This phenomenon is known as the curse of dimensionality, and it ties into the fact that non-parametric approaches often perform poorly when p is large. We will now investigate this curse.
+
+(a) Suppose that we have a set of observations, each with measurements on $p = 1$ feature, $X$. We assume that $X$ is uniformly (evenly) distributed on $[0,1]$. Associated with each observation is a response value. Suppose that we wish to predict a test observation’s response using only observations that are within 10% of the range of $X$ closest to that test observation. For instance, in order to predict the response for a test observation with $X = 0.6$, we will use observations in the range $[0.55,0.65]$. On average, what fraction of the available observations will we use to make the prediction ?
+
+
+
+(b) Now suppose that we have a set of observations, each with measurements on $p = 2$ features, $X_1$ and $X_2$. We assume that $(X_1, X_2)$ are uniformly distributed on $[0,1]\times[0,1]$. We wish to predict a test observation’s response using only observations that are within 10% of the range of $X_1$ and within 10% of the range of $X_2$ closest to that test observation. For instance, in order to predict the response for a test observation with $X_1 = 0.6$ and $X_2 = 0.35$, we will use observations in the range $[0.55,0.65]$ for $X_1$ and in the range $[0.3,0.4]$ for $X_2$. On average, what fraction of the available observations will we use to make the prediction ?
+
+
+
+(c) Now suppose that we have a set of observations on $p = 100$ features. Again the observations are uniformly distributed on each feature, and again each feature ranges in value from 0 to 1. We wish to predict a test observation’s response using observations within the 10% of each feature’s range that is closest to that test observation. What fraction of the available observations will we use to make the prediction ?
+
+
+
+(d) Using your answers to parts (a)-(c), argue that a drawback of KNN when $p$ is large is that there are very few training observations “near” any given test observation.
+
+
+
+(e) Now suppose that we wish to make a prediction for a test observation by creating a p-dimensional hypercube centered around the test observation that contains, on average, 10% of the training observations. For $p = 1, 2, 100$, what is the length of each side of the hypercube ? Comment on your answer. Note: A hypercube is a generalization of a cube to an arbitrary number of dimensions. When $p = 1$, a hypercube is simply a line segment, when $p = 2$ it is a square, and when $p = 100$ it is a 100-dimensional cube.
+
+
+
+### Q5
+
+> We now examine the differences between LDA and QDA.
+
+> (a) If the Bayes decision boundary is linear, do we expect LDA or QDA to perform better on the training set? On the test set?
+
+If the actual decision boundary is linear, QDA may still perform better on the training set, but because of over-fitting may not perform better on the test set.
+
+> (b) If the Bayes decision boundary is non-linear, do we expect LDA or QDA to perform better on the training set? On the test set?
+
+If the decision boundary is non-linear QDA would perform better on both training and test sets
+
+> (c) In general, as the sample size (n) increases, do we expect the test prediction accuracy of QDA relative to LDA to improve, decline,or be unchanged? Why?
+
+
+> (d) True or False: Even if the Bayes decision boundary for a givenproblem is linear, we will probably achieve a
+superior test er-ror rate using QDA rather than LDA because QDA is flexibleenough to model a linear decision boundary. Justify your answer.
+
+
+
+### Q6. Suppose we collect data for a group of students in a statistics class with variables $X_1 =$ hours studied, $X_2 =$ undergrad GPA, and $Y =$ receive an A. We fit a logistic regression and produce estimated coefficients, $\hat{\beta}_0 = -6$, $\hat{\beta}_1 = 0.05$, $\hat{\beta}_2 = 1$.
+
+(a) Estimate the probability that a student who studies for 40 hours and has an undergrad GPA of 3.5 gets an A in the class.
+
+*It suffices to plug in the beta values in the equation for predicted probability,
+\[\hat{p}(X) = \frac{e^{-6 + 0.05X_1 + X_2}}{(1 + e^{-6 + 0.05X_1 + X_2})} = 0.3775.\]*
+
+(b) How many hours would the student in part (a) need to study to have a 50% chance of getting an A in the class ?
+
+*The equation for predicted probability tells us that
+\[\frac{e^{-6 + 0.05X_1 + 3.5}}{(1 + e^{-6 + 0.05X_1 + 3.5})} = 0.5,\]
+which is equivalent to
+\[e^{-6 + 0.05X_1 + 3.5} = 1.\]
+By taking the logarithm of both sides, we get
+\[X_1 = \frac{2.5}{0.05} = 50.\]*
+
+**Q7.** Suppose that we wish to predict whether a given stock will issue a dividend this year (“Yes” or “No”) based on $X$, last year’s percent profit. We examine a large number of companies and discover that the mean value of $X$ for companies that issued a dividend was $\overline{X} = 10$, while the mean for those that didn’t was $\overline{X} = 0$. In addition, the variance of $X$ for these two sets of companies was $\hat{\sigma}^2 = 36$. Finally, 80% of companies issued dividends. Assuming that $X$ follows a normal distribution, predict the probability that a company will issue a dividend this year given that its percentage return was $X = 4$ last year.
+
+*It suffices to plug in the parameters and $X$ values in the equation for $p_k(x)$. We get
+\[p_1(4) = \frac{0.8 e^{-(1/72)(4 - 10)^2}}{0.8 e^{-(1/72)(4 - 10)^2} + 0.2 e^{-(1/72)(4 - 0)^2}} = 0.752;\]
+so the probability that a company will issue a dividend this year given that its percentage return was $X = 4$ last year is $0.752$.*
+
+**Q8.** Suppose that we take a data set, divide it into equally-sized training and test sets, and then try out two different classification procedures. First we use logistic regression and get an error rate of 20% on the training data and 30% on the test data. Next we use 1-nearest neighbors (i.e. $K = 1$) and get an average error rate (averaged over both test and training data sets) of 18%. Based on these results, which method should we prefer to use for classification of new observations ? Why ?
+
+*In the case of KNN with $K = 1$, we have a training error rate of $0\%$ because in this case, we have
+\[P(Y = j | X = x_i) = I(y_i = j)\]
+which is equal to $1$ if $y_i = j$ and $0$ if not. We do not make any error on the training data within this setting, that explains the $0\%$ training error rate. However, we have an average error rate of $18\%$ wich implies a test error rate of $36\%$ for KNN which is greater than the test error rate for logistic regression of $30\%$. So, it is better to choose logistic regression because of its lower test error rate.*
+
+### Q9 This problem has to do with odds.
+
+> (a) On average, what fraction of people with an odds of 0.37 of defaulting on their credit card payment will in fact default ?
+
+By definition, odds, represents `prob(x)/1-prob(x)`, thus,
+\[\frac{p(X)}{1 - p(X)} = 0.37,\]
+
+OR solving for p(x) -->
+
+$$p(X) = \frac{0.37}{1 + 0.37} = 0.27.$$
+
+
+
+(b) Suppose that an individual has a 16% chance of defaulting on her credit card payment. What are the odds that she will default ?
+
+Conversely, we know $p(X) = 0.16$, thus,
+$$\frac{p(X)}{1 - p(X)} = \frac{0.16}{1 - 0.16} = 0.19.$$
+
+The odds that she will default is then $19\%$.*
+
+
+
+
+
+```{r}
+library(pacman)
+
+# stat libs
+p_load(MASS, ISLR)
+
+# data cleaning
+p_load(broom, dplyr, janitor)
+
+# plots
+p_load(corrplot, ggplot2)
+```
+
+
+### Q 10
+
+### cleaning column names
+```{r}
+weekly = Weekly %>% clean_names()
+```
+
+**trend in volume**
+
+```{r}
+plot(weekly$volume)
+```
+
+
+**examine the structure of the data**
+
+```{r}
+head(weekly)
+str(weekly)
+summary(weekly)
+```
+
+
+
+**quickly examine trends among variables**
+
+```{r, fig.height=8, fig.width=8}
+pairs(weekly)
+```
+
+
+```{r}
+cor(weekly[, -9])
+corrplot(cor(Weekly[, -9]))
+```
+
+Let us fit a logistic model to begin with:
+
+### b
+```{r}
+glm_fit_a = glm(direction ~ lag1 + lag2 + lag3 + lag4 + lag5 + volume, 
+              data = weekly, family = "binomial")
+tidy(glm_fit_a)
+summary(glm_fit_a)
+
+# no intercept
+glm_fit_b = glm(direction ~ 0 + lag1 + lag2 + lag3 + 
+                 lag4 + lag5 + volume, data = weekly, 
+               family = binomial)
+summary(glm_fit_b)
+
+# changing the sequence of variables
+glm_fit_c = glm(direction ~ lag2 + lag3 + 
+                 lag4 + lag5 + volume + lag1, 
+                data = weekly, 
+               family = binomial)
+summary(glm_fit_c)
+```
+
+
+**number of weeks when marker was up/down**
+
+```{r fig.width=8}
+ggplot(weekly, aes(x = as.factor(year), fill = direction)) +
+  geom_bar()
+```
+
+```{r}
+# Extract coefficients
+tidy(coef(glm_fit_a))
+summary(glm_fit_a$coefficients) # another way to extract coeff.
+```
+
+`type` tell glm to output prob in form of P(Y = 1|X)
+
+response: on the scale of Y
+default: log-odds (default predictions are of log-odds (probabilities on logit scale)
+
+
+This chunk fails.
+
+```{r }
+# Use predict function
+glm.probs = predict(glm_fit_a, type = "response") 
+# type tell glm to output prob in form of P(Y = 1|X)
+tidy(glm.probs[1:10])
+glm_fit_a$fitted.values[1:10]
+
+df = data.frame(obs_dir = weekly[,"direction"], 
+                fitted = glm_fit_a$fitted.values, stringsAsFactors = FALSE)
+df
+
+```
+
+```{r}
+
+ggplot(df, aes(obs_dir, fitted)) + geom_boxplot() + geom_jitter()
+```
+
+```{r}
+df = mutate(df, fitted_dir = ifelse(fitted > 0.5, "Up", "Down"))
+```
+
+```{r eval=FALSE}
+filter(df, obs_dir == "Down", fitted_dir == "Up")
+
+table(df$obs_dir, df$fitted_dir)
+```
+
+
+Rows represent first variable.
+We correctly predict Down as Down 145 times
+
+
+```{r}
+(507 + 145)/1250
+```
+
+
+Training error rate: `r 100-52.16`.
+
+Section LDA
+
+```{r}
+p_load(MASS)
+
+train = (Smarket$Year < 2005)
+
+lda_fit = lda(Direction ~ Lag1 + Lag2, data = Smarket, subset = train)
+print(lda_fit)
+```
+
+$\beta_1$: -0.642
+$\beta_2$: -0.513
+
+```{r}
+plot(lda_fit)
+```
+
+
+
+```{r}
+smarket_2005 = Smarket [!train, ]
+pred_lda = predict(lda_fit, newdata = smarket_2005)
+
+class_lda = pred_lda$class
+
+table(class_lda, smarket_2005$Direction)
+
+mean(class_lda == smarket_2005$Direction)
+
+```
+
+
+#' KNN
+
+KNN does not like formulas, it needs 
+
+
+```{r}
+p_load(class)
+
+# X: predictors
+train.X = cbind(Smarket$Lag1, Smarket$Lag2)[train ,]
+test.X = cbind(Smarket$Lag1, Smarket$Lag2)[!train, ]
+
+# Y: response
+train.Direction = Smarket$Direction[train]
+
+
+
+for(k in 1:4){
+  set.seed(1)
+  cat("working with k:", k)
+  #           training  test    what is the response
+  knn.pred = knn(train.X, test.X, train.Direction, k = )
+  table(knn.pred, smarket_2005$Direction)
+  mean(knn.pred == smarket_2005$Direction)
+}
+
+```
+
+
+
+Using LDA with MLR
+
+```{r}
+p_load(mlr)
+data(iris)
+
+print(iris)
+
+## Define the task
+task = makeClassifTask(id = "tutorial", data = iris, target = "Species")
+
+## Define the learner
+lrn = makeLearner("classif.lda")
+
+## Define the resampling strategy
+rdesc = makeResampleDesc(method = "CV", stratify = TRUE)
+
+## Do the resampling
+r = resample(learner = lrn, task = task, resampling = rdesc, show.info = FALSE)
+
+## Get the mean misclassification error
+print(r)
+
+```
+
+
+```{r eval=FALSE}
+library(MASS)
+fit.lda <- lda(direction ~ lag2, 
+               data = weekly, 
+               subset = train)
+fit.lda
+
+pred.lda <- predict(fit.lda, weekly.20092010)
+table(pred.lda$class, direction.20092010)
+```
+
+
+## Q 11.
+```{r}
+attach(Auto)
+mpg01 <- rep(0, length(mpg))
+mpg01[mpg > median(mpg)] <- 1
+Auto <- data.frame(Auto, mpg01)
+```
+
+
+```{r}
+cor(Auto[, -9])
+pairs(Auto)
+```
+
+```{r}
+boxplot(cylinders ~ mpg01, data = Auto, main = "Cylinders vs mpg01")
+boxplot(displacement ~ mpg01, data = Auto, main = "Displacement vs mpg01")
+boxplot(horsepower ~ mpg01, data = Auto, main = "Horsepower vs mpg01")
+boxplot(weight ~ mpg01, data = Auto, main = "Weight vs mpg01")
+boxplot(acceleration ~ mpg01, data = Auto, main = "Acceleration vs mpg01")
+boxplot(year ~ mpg01, data = Auto, main = "Year vs mpg01")
+
+```
+
+c We may conclude that there exists some association between “mpg01” and “cylinders”, “weight”, “displacement” and “horsepower”.
+Split the data into a training set and a test set.
+
+```{r}
+train = (year%%2 == 0)  # if the year is even
+test = !train
+Auto.train = Auto[train, ]
+Auto.test = Auto[test, ]
+mpg01.test = mpg01[test]
+```
+
+d. Perform LDA on the training data in order to predict “mpg01” using the variables that seemed most associated with “mpg01” in (b). What is the test error of the model obtained ?
+
+```{r}
+p_load(MASS)
+
+# LDA
+library(MASS)
+lda.fit = lda(mpg01 ~ cylinders + weight + displacement + horsepower, 
+              data = Auto, 
+    subset = train)
+lda.pred = predict(lda.fit, Auto.test)
+mean(lda.pred$class != mpg01.test)
+```
+
+e. 
+
+```{r}
+# QDA
+qda.fit = qda(mpg01 ~ cylinders + weight + displacement + horsepower, data = Auto, 
+    subset = train)
+qda.pred = predict(qda.fit, Auto.test)
+mean(qda.pred$class != mpg01.test)
+```
+
+f. logistic
+
+```{r}
+# Logistic regression
+glm.fit = glm(mpg01 ~ cylinders + weight + displacement + horsepower, data = Auto, 
+    family = binomial, subset = train)
+glm.probs = predict(glm.fit, Auto.test, type = "response")
+glm.pred = rep(0, length(glm.probs))
+glm.pred[glm.probs > 0.5] = 1
+mean(glm.pred != mpg01.test)
+```
+
+
+g. KNN
+
+```{r}
+library(class)
+train.X = cbind(cylinders, weight, displacement, horsepower)[train, ]
+test.X = cbind(cylinders, weight, displacement, horsepower)[test, ]
+train.mpg01 = mpg01[train]
+set.seed(1)
+
+# KNN(k=1)
+knn.pred = knn(train.X, test.X, train.mpg01, k = 1)
+mean(knn.pred != mpg01.test)
+
+# KNN(k=10)
+knn.pred = knn(train.X, test.X, train.mpg01, k = 10)
+mean(knn.pred != mpg01.test)
+
+# KNN(k=100)
+knn.pred = knn(train.X, test.X, train.mpg01, k = 100)
+mean(knn.pred != mpg01.test)
+
+```
+
+```{r}
+
+```
+# END

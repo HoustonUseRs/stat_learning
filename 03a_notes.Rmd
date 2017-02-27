@@ -1,0 +1,67 @@
+---
+title: "Chapter 3"
+output: html_notebook
+---
+
+
+# Chapter 3
+
+## Notes
+
+```{r}
+set.seed(1)
+
+x1 = runif(100)
+x2 = 0.5*x1 + rnorm(100)/10
+
+#   b0  b1      b2        error
+y = 2 + 2 *x1 + 0.3*x2 + rnorm(100)
+
+plot(x1, x2)
+cor(x1, x2)
+
+
+lm_out = lm(y ~ x1 + x2)
+summary(lm_out)
+
+# using x1 only
+lm_x1 = lm(y ~ x1)
+summary(lm_x1)
+
+# using x2 only
+lm_x2 = lm(y ~ x2)
+summary(lm_x2)
+
+```
+
+
+
+## we have a issue of collinearity 
+SE of B1
+full model: SE of estimate
+when we use both seperately,
+the SE are lower. 
+[what-is-the-difference-between-collinearity-and-interaction](http://stats.stackexchange.com/questions/113733/what-is-the-difference-between-collinearity-and-interaction)
+
+Collinearity is a statistical phenomenon in which two or more predictor variables in a multiple regression model are highly correlated, meaning that one can be linearly predicted from the others with a non-trivial degree of accuracy. In this situation the coefficient estimates of the multiple regression may change erratically in response to small changes in the model or the data. Collinearity does not reduce the predictive power or reliability of the model as a whole, at least within the sample data themselves; it only affects calculations regarding individual predictors. That is, a multiple regression model with correlated predictors can indicate how well the entire bundle of predictors predicts the outcome variable, but it may not give valid results about any individual predictor, or about which predictors are redundant with respect to others.
+
+
+```{r}
+x1 = c(x1, 0.1)
+x2 = c(x2, 0.8)
+
+y = c(y, 6)
+lm_out = lm( y ~ x1+x2)
+summary(lm_out)
+
+op = par(mfrow = c(2, 2))
+plot(lm_out, ask = FALSE)
+par(op)
+
+
+# try degrees of freedom
+pt(1.996, df = 97, lower.tail = FALSE) * 2 
+
+```
+
+
